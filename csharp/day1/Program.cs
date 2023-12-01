@@ -41,7 +41,6 @@ namespace adventofcode2023
         static long DoMagic(IEnumerable<string> input)
         {
             int total = 0;
-            Regex rx = new Regex("[0-9]");
             foreach (var line in input)
             {
                 string number = "";
@@ -62,7 +61,6 @@ namespace adventofcode2023
         static long DoMagic2(IEnumerable<string> input)
         {
             int total = 0;
-            Regex rx = new Regex("[0-9]");
             foreach (var line in input)
             {
                 string number = "";
