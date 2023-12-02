@@ -11,7 +11,7 @@ namespace adventofcode2023
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Day X of AoC");
+            Console.WriteLine("Day 3 of AoC");
             IEnumerable<string> data = null;
             Utils.Utils.MeasureActionTime("Load", () =>
             {
