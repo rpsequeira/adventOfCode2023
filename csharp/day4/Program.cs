@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using Utils;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace adventofcode2023
 {
@@ -25,11 +26,11 @@ namespace adventofcode2023
                 var res = DoMagic(data);
                 Console.WriteLine($"Result -> {res}");
             });
-            // Utils.Utils.MeasureActionTime("Part 2", () =>
-            // {
-            //     var res = DoMagic2(data);
-            //     Console.WriteLine($"Result -> {res}");
-            // });
+            Utils.Utils.MeasureActionTime("Part 2", () =>
+            {
+                var res = DoMagic2(data.ToList());
+                Console.WriteLine($"Result -> {res}");
+            });
             Console.WriteLine("END");
         }
 
@@ -40,12 +41,45 @@ namespace adventofcode2023
 
         static long DoMagic(IEnumerable<string> input)
         {
-            return -1;
+            var res = 0;
+            foreach (var line in input)
+            {
+                var cardRes = 0;
+                var numbers = line.Split(':')[1].Trim();
+                var winningNumbers = numbers.Split("|")[0].Trim().Split(' ').Where(s => { return s.Trim() != "";}).Select(Int32.Parse);
+                var myNumbers = numbers.Split("|")[1].Trim().Split(' ').Where(s => { return s.Trim() != "";}).Select(Int32.Parse);
+                var wonNumbers = winningNumbers.Intersect(myNumbers).Count();
+                if (wonNumbers > 0){
+                    cardRes = 1;
+                    while (wonNumbers > 1){
+                        cardRes *= 2;
+                        wonNumbers--;
+                    }
+                }
+                res += cardRes;
+            }
+            return res;
         }
 
-        static long DoMagic2(IEnumerable<string> input)
+        static long DoMagic2(List<string> input)
         {
-            return -1;
+            int[] copies = new int[input.Count];
+            Array.Fill(copies,1);
+            for (int i = 0; i < input.Count; i++)
+            {
+                var numbers = input[i].Split(':')[1].Trim();
+                var winningNumbers = numbers.Split("|")[0].Trim().Split(' ').Where(s => { return s.Trim() != "";}).Select(Int32.Parse);
+                var myNumbers = numbers.Split("|")[1].Trim().Split(' ').Where(s => { return s.Trim() != "";}).Select(Int32.Parse);
+                var wonNumbers = winningNumbers.Intersect(myNumbers).Count();
+                for (int j = 0; j < copies[i]; j++)
+                {
+                    for (int k = 1; k <= wonNumbers; k++)
+                    {
+                        copies[i+k]++;
+                    }
+                }               
+            }
+            return copies.Sum();
         }
     }
 }
